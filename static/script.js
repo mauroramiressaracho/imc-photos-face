@@ -67,8 +67,14 @@ searchButton.onclick=async()=>{
  try{
   const form=new FormData();form.append("file",file);
   const response=await fetch("/api/find-face",{method:"POST",body:form});
-  const data=await response.json();
-  if(!response.ok)throw new Error(data.detail||"Falha ao analisar a imagem.");
+  const raw=await response.text();
+  let data={};
+  try{
+    data=raw?JSON.parse(raw):{};
+  }catch{
+    data={detail:raw||"O servidor encerrou a resposta antes de concluir o processamento."};
+  }
+  if(!response.ok)throw new Error(data.detail||`Falha no servidor (HTTP ${response.status}).`);
 
   if(data.faces_detected===0){
    faceStatus.className="face-status error";
