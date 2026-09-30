@@ -48,6 +48,8 @@ PHOTO_IDS = [
 ]
 
 _face_index: list[dict] | None = None
+_detector = None
+_recognizer = None
 
 
 def _download(url: str, path: Path) -> None:
@@ -73,10 +75,19 @@ def _decode(image_bytes: bytes) -> np.ndarray:
 
 
 def _models():
-    _ensure_models()
-    detector = cv2.FaceDetectorYN.create(str(YUNET_PATH), "", (320, 320), 0.85, 0.3, 5000)
-    recognizer = cv2.FaceRecognizerSF.create(str(SFACE_PATH), "")
-    return detector, recognizer
+    global _detector, _recognizer
+    if _detector is not None and _recognizer is not None:
+        return _detector, _recognizer
+
+    with MODEL_LOCK:
+        if _detector is None or _recognizer is None:
+            _ensure_models()
+            _detector = cv2.FaceDetectorYN.create(
+                str(YUNET_PATH), "", (320, 320), 0.85, 0.3, 5000
+            )
+            _recognizer = cv2.FaceRecognizerSF.create(str(SFACE_PATH), "")
+
+    return _detector, _recognizer
 
 
 def _faces_and_features(image: np.ndarray):
@@ -115,7 +126,7 @@ def detect_faces(image_bytes: bytes):
 
 
 def _download_drive_thumbnail(photo_id: str) -> bytes:
-    url = f"https://drive.google.com/thumbnail?id={photo_id}&sz=w1200"
+    url = f"https://drive.google.com/thumbnail?id={photo_id}&sz=w800"
     response = requests.get(url, timeout=45)
     response.raise_for_status()
     return response.content
