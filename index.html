@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#050505" />
+  <title>IMC Photos Face | Regional Campo Grande/MS</title>
+  <meta name="description" content="Galeria de fotos da Regional Campo Grande/MS - Insanos MC." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="Início">
+      <span class="brand-mark">IMC</span>
+      <span>
+        <strong>INSANOS MC</strong>
+        <small>REGIONAL CAMPO GRANDE/MS</small>
+      </span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
+    <nav id="nav">
+      <a href="#inicio">Início</a>
+      <a href="#album">Álbum</a>
+      <button class="nav-find" data-open-find>Me encontrar</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-bg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <p class="eyebrow">FOTOS OFICIAIS</p>
+        <h1>REGIONAL<br><span>CAMPO GRANDE/MS</span></h1>
+        <p class="hero-copy">Momentos que fazem história. Encontre suas fotos nos eventos da Regional.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" data-open-find>
+            <span class="icon">◎</span> ME ENCONTRAR
+          </button>
+          <a class="btn btn-ghost" href="#album">VER ÁLBUM</a>
+        </div>
+        <div class="stats">
+          <div><strong id="photoCount">0</strong><span>FOTOS DISPONÍVEIS</span></div>
+          <div><strong>2026</strong><span>ACERVO REGIONAL</span></div>
+        </div>
+      </div>
+      <div class="scroll-hint">↓</div>
+    </section>
+
+    <section class="find-strip">
+      <div>
+        <span class="find-icon">⌾</span>
+        <div>
+          <h2>ENCONTRE SUAS FOTOS</h2>
+          <p>Envie uma selfie e localize automaticamente as fotos em que você aparece.</p>
+        </div>
+      </div>
+      <button class="btn btn-primary" data-open-find>USAR SELFIE</button>
+    </section>
+
+    <section class="album" id="album">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">O ÁLBUM</p>
+          <h2>MEMÓRIAS DA REGIONAL</h2>
+        </div>
+        <p>Fotos carregadas diretamente do acervo no Google Drive.</p>
+      </div>
+
+      <div class="filters">
+        <button class="filter active" data-filter="all">Todas</button>
+        <button class="filter" data-filter="evento">Eventos</button>
+        <button class="filter" data-filter="social">Ação social</button>
+      </div>
+
+      <div class="gallery" id="gallery"></div>
+      <div class="load-status" id="loadStatus">Carregando fotos...</div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="brand footer-brand">
+      <span class="brand-mark">IMC</span>
+      <span><strong>INSANOS MC</strong><small>REGIONAL CAMPO GRANDE/MS</small></span>
+    </div>
+    <p>IMC Photos Face · Protótipo inicial</p>
+  </footer>
+
+  <dialog class="modal" id="findModal">
+    <button class="close-modal" id="closeFind" aria-label="Fechar">×</button>
+    <div class="modal-icon">◎</div>
+    <p class="eyebrow">ME ENCONTRAR</p>
+    <h2>ENVIE UMA SELFIE</h2>
+    <p class="modal-copy">Use uma foto com apenas uma pessoa, de preferência olhando diretamente para a câmera.</p>
+
+    <label class="upload-box" for="selfieInput">
+      <span>＋</span>
+      <strong>ESCOLHER SELFIE</strong>
+      <small>JPG, PNG ou câmera do celular</small>
+    </label>
+    <input type="file" id="selfieInput" accept="image/*" capture="user" hidden>
+
+    <div class="preview-wrap" id="previewWrap" hidden>
+      <img id="selfiePreview" alt="Prévia da selfie" />
+      <button class="btn btn-primary wide" id="searchFace">PROCURAR MINHAS FOTOS</button>
+    </div>
+
+    <div class="privacy-note">
+      <strong>Privacidade</strong>
+      <p>Nesta versão de teste a selfie fica apenas no navegador e não é enviada. O reconhecimento facial será conectado ao backend na próxima etapa.</p>
+    </div>
+  </dialog>
+
+  <dialog class="viewer" id="viewer">
+    <button class="close-viewer" id="closeViewer">×</button>
+    <img id="viewerImg" alt="Foto ampliada" />
+    <div class="viewer-actions">
+      <a class="btn btn-primary" id="openOriginal" target="_blank" rel="noopener">ABRIR ORIGINAL</a>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast"></div>
+  <script src="./script.js"></script>
+</body>
+</html>
