@@ -80,17 +80,51 @@ findModal.addEventListener("click",e=>{if(e.target===findModal)findModal.close()
 const input=document.getElementById("selfieInput");
 const previewWrap=document.getElementById("previewWrap");
 const preview=document.getElementById("selfiePreview");
+const searchButton=document.getElementById("searchFace");
+
+let faceStatus=document.getElementById("faceStatus");
+if(!faceStatus){
+  faceStatus=document.createElement("div");
+  faceStatus.id="faceStatus";
+  faceStatus.style.marginTop="12px";
+  faceStatus.style.padding="14px 16px";
+  faceStatus.style.border="1px solid #3a3a3a";
+  faceStatus.style.background="#111";
+  faceStatus.style.color="#d7d7d7";
+  faceStatus.style.fontSize="12px";
+  faceStatus.style.lineHeight="1.55";
+  faceStatus.style.display="none";
+  searchButton.insertAdjacentElement("afterend", faceStatus);
+}
+
 input.addEventListener("change",()=>{
   const file=input.files?.[0];
   if(!file)return;
   preview.src=URL.createObjectURL(file);
   previewWrap.hidden=false;
+  faceStatus.style.display="none";
+  searchButton.disabled=false;
+  searchButton.textContent="PROCURAR MINHAS FOTOS";
 });
 
-const toast=document.getElementById("toast");
-function showToast(msg){toast.textContent=msg;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),4200);}
 document.getElementById("searchFace").onclick=()=>{
-  showToast("Selfie carregada. O reconhecimento facial será conectado na próxima etapa.");
+  if(!input.files?.[0]){
+    faceStatus.style.display="block";
+    faceStatus.style.borderColor="#8a6a00";
+    faceStatus.innerHTML="<strong style='color:#f1c40f'>Selecione uma selfie primeiro.</strong>";
+    return;
+  }
+
+  searchButton.disabled=true;
+  searchButton.textContent="ANALISANDO...";
+  faceStatus.style.display="block";
+  faceStatus.style.borderColor="#8a6a00";
+  faceStatus.innerHTML="<strong style='color:#f1c40f'>Primeiro teste concluído:</strong><br>A selfie foi carregada corretamente. O reconhecimento facial real ainda não está conectado ao site. Para localizar suas fotos de verdade, precisamos agora ligar o backend com InsightFace e o índice das fotos do Google Drive.";
+
+  setTimeout(()=>{
+    searchButton.disabled=false;
+    searchButton.textContent="PROCURAR MINHAS FOTOS";
+  },900);
 };
 
 document.getElementById("menuBtn").onclick=()=>document.getElementById("nav").classList.toggle("open");
