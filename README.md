@@ -1,34 +1,61 @@
 # IMC Photos Face
 
-Protótipo da plataforma de fotos da Regional Campo Grande/MS - Insanos MC.
+Plataforma de fotos da Regional Campo Grande/MS - Insanos MC.
 
-## MVP atual
+## Arquitetura atual
 
-- Landing page responsiva
-- Galeria utilizando imagens do Google Drive
-- Visualizador das fotos
-- Fluxo visual "Me Encontrar"
-- Upload local da selfie (não enviado nesta versão)
-- Layout preparado para integração futura com reconhecimento facial
+O projeto agora roda como um único Web Service:
 
-## Fonte de fotos
+- FastAPI entrega o frontend;
+- HTML/CSS/JS ficam no mesmo domínio;
+- a selfie é enviada para `/api/find-face`;
+- OpenCV faz a primeira validação/detecção facial;
+- Google Drive continua sendo a origem das fotos.
 
-Google Drive Folder ID:
+## Estrutura
+
+```
+app/
+  main.py
+  face_service.py
+  drive_service.py
+  templates/index.html
+static/
+  style.css
+  script.js
+requirements.txt
+render.yaml
+```
+
+## Rodar localmente
+
+```bash
+python -m venv .venv
+# Windows
+.venv\Scripts\activate
+
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+Acesse:
+
+- Site: http://127.0.0.1:8000
+- Health: http://127.0.0.1:8000/api/health
+- Docs: http://127.0.0.1:8000/docs
+
+## Deploy no Render
+
+Crie um **Web Service** apontando para este repositório. O `render.yaml` já contém build, start command e health check.
+
+## Estado do reconhecimento
+
+Nesta etapa o backend detecta quantos rostos existem na selfie usando OpenCV. A comparação biométrica com as fotos do Drive será adicionada na próxima etapa, depois de validarmos que o serviço Free do Render está estável.
+
+## Google Drive
+
+Folder ID de teste:
 
 ```
 18KOtwcU9QB0Moqr9uIaU342O2WexxaYb
 ```
-
-## Próxima etapa
-
-Backend para:
-- sincronização automática com Google Drive;
-- thumbnails;
-- InsightFace;
-- embeddings;
-- PostgreSQL/pgvector;
-- busca facial.
-
-## GitHub Pages
-
-O site é estático e pode ser publicado diretamente a partir da branch `main`.
